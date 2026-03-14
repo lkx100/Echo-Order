@@ -1,6 +1,36 @@
 """Pydantic schemas for API request / response models."""
 
-from pydantic import BaseModel
+from pydantic import BaseModel, EmailStr
+
+
+# ---------------------------------------------------------------------------
+# Auth
+# ---------------------------------------------------------------------------
+
+class UserRegisterRequest(BaseModel):
+    email: EmailStr
+    username: str
+    password: str
+    role: str = "customer"  # "customer" or "admin"
+
+
+class UserLoginRequest(BaseModel):
+    username: str
+    password: str
+
+
+class UserResponse(BaseModel):
+    id: int
+    email: str
+    username: str
+    role: str
+    is_active: bool
+    created_at: str
+
+
+class AuthResponse(BaseModel):
+    user: UserResponse
+    message: str
 
 
 # ---------------------------------------------------------------------------

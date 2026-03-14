@@ -24,9 +24,40 @@ class OrderStatus(str, enum.Enum):
     CANCELLED = "cancelled"
 
 
+class UserRole(str, enum.Enum):
+    CUSTOMER = "customer"
+    ADMIN = "admin"
+
+
 # ---------------------------------------------------------------------------
 # Models
 # ---------------------------------------------------------------------------
+
+class User(Base):
+    __tablename__ = "users"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    email = Column(String(255), nullable=False, unique=True, index=True)
+    username = Column(String(100), nullable=False, unique=True, index=True)
+    hashed_password = Column(String(255), nullable=False)
+    role = Column(
+        SAEnum(UserRole),
+        default=UserRole.CUSTOMER,
+        nullable=False,
+    )
+    is_active = Column(Boolean, default=True)
+    created_at = Column(DateTime, default=datetime.datetime.utcnow)
+
+    def to_dict(self) -> dict:
+        return {
+            "id": self.id,
+            "email": self.email,
+            "username": self.username,
+            "role": self.role.value,
+            "is_active": self.is_active,
+            "created_at": self.created_at.isoformat(),
+        }
+
 
 class MenuItem(Base):
     __tablename__ = "menu_items"

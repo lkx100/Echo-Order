@@ -11,6 +11,7 @@ from config import settings
 from database.engine import init_db, async_session
 from database.models import MenuItem
 from routers.voice import router as voice_router
+from routers.auth import router as auth_router
 
 from sqlalchemy import select
 
@@ -81,6 +82,7 @@ os.makedirs(static_dir, exist_ok=True)
 app.mount("/static", StaticFiles(directory=static_dir), name="static")
 
 # Routers
+app.include_router(auth_router)
 app.include_router(voice_router)
 
 

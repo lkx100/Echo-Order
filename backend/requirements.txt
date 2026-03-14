@@ -7,3 +7,6 @@ sqlalchemy[asyncio]
 aiosqlite
 groq
 elevenlabs
+bcrypt==4.0.1
+passlib
+email-validator

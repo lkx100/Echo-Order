@@ -16,19 +16,17 @@ const Hero = () => {
       {/* Left side content */}
       <div className="hero__content">
         <h1 className="hero__title">
-          We Are Ready{' '}
-          <br />
-          To{' '}
           <span className="hero__highlight">
             <span className="corner corner--tl"></span>
             <span className="corner corner--tr"></span>
             <span className="corner corner--bl"></span>
             <span className="corner corner--br"></span>
-            Deliver
-          </span>{' '}
-          Your
+            EchoOrder
+          </span>
           <br />
-          Food<span className="hero__emojis">🥰🍔🤙</span>
+          Voice-Powered
+          <br />
+          Instant Ordering<span className="hero__emojis">🎤⚡</span>
         </h1>
 
         <div className="hero__cta">

@@ -1,0 +1,257 @@
+.hero {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 20px 60px 40px;
+  min-height: calc(100vh - 80px);
+  overflow: hidden;
+}
+
+/* ===== Left Content ===== */
+.hero__content {
+  flex: 1;
+  max-width: 580px;
+  padding-top: 40px;
+  z-index: 2;
+}
+
+.hero__title {
+  font-size: clamp(48px, 6vw, 72px);
+  font-weight: 800;
+  line-height: 1.1;
+  color: var(--text-main);
+  margin-bottom: 40px;
+}
+
+/* "Deliver" box styling */
+.hero__highlight {
+  color: var(--accent-cyan);
+  position: relative;
+  display: inline-block;
+  padding: 2px 12px;
+  margin: 0 4px;
+}
+
+.hero__highlight::before {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border: 2px solid rgba(168, 85, 247, 0.5);
+  border-radius: 4px;
+}
+
+/* Corner squares */
+.hero__highlight .corner {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+}
+
+.hero__highlight .corner--tl {
+  top: -8px;
+  left: -8px;
+  background: var(--accent-orange);
+}
+
+.hero__highlight .corner--tr {
+  top: -8px;
+  right: -8px;
+  background: var(--accent-green);
+}
+
+.hero__highlight .corner--bl {
+  bottom: -8px;
+  left: -8px;
+  background: var(--accent-green);
+}
+
+.hero__highlight .corner--br {
+  bottom: -8px;
+  right: -8px;
+  background: #facc15;
+}
+
+.hero__emojis {
+  font-size: 0.55em;
+  vertical-align: middle;
+  margin-left: 4px;
+}
+
+/* ===== CTA Form ===== */
+.hero__cta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 48px;
+  flex-wrap: wrap;
+}
+
+.hero__input {
+  background: var(--bg-card);
+  border: 1px solid #2a2a2a;
+  border-radius: 8px;
+  padding: 16px 24px;
+  color: var(--text-muted);
+  font-size: 14px;
+  width: 260px;
+  transition: border-color 0.3s ease;
+}
+
+.hero__input::placeholder {
+  color: var(--text-muted);
+}
+
+.hero__input:focus {
+  border-color: var(--accent-cyan);
+}
+
+.hero__btn {
+  background: var(--accent-cyan);
+  color: #0a0a0a;
+  font-weight: 600;
+  font-size: 15px;
+  padding: 16px 32px;
+  border-radius: 8px;
+  transition: transform 0.2s ease, box-shadow 0.3s ease;
+}
+
+.hero__btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(45, 212, 191, 0.25);
+}
+
+/* ===== Floating Food Icons (decorative) ===== */
+.hero__deco {
+  position: absolute;
+  z-index: 1;
+  opacity: 0.12;
+  pointer-events: none;
+}
+
+.hero__deco--fries {
+  top: 10%;
+  left: 4%;
+  font-size: 42px;
+  animation: float 6s ease-in-out infinite;
+}
+
+.hero__deco--pizza {
+  top: 6%;
+  left: 35%;
+  font-size: 36px;
+  animation: float 7s ease-in-out infinite 1s;
+}
+
+.hero__deco--burger {
+  top: 14%;
+  right: 42%;
+  font-size: 38px;
+  animation: float 5s ease-in-out infinite 0.5s;
+}
+
+.hero__deco--donut {
+  bottom: 30%;
+  right: 40%;
+  font-size: 32px;
+  animation: float 8s ease-in-out infinite 2s;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
+}
+
+/* ===== Right Image ===== */
+.hero__image-wrapper {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  position: relative;
+  z-index: 2;
+  max-width: 600px;
+}
+
+.hero__image {
+  width: 100%;
+  max-width: 580px;
+  height: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 20px 40px rgba(0,0,0,0.5));
+  animation: heroFloat 4s ease-in-out infinite;
+}
+
+@keyframes heroFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+/* ===== Background Gradient Blobs ===== */
+.hero__glow {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(120px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.hero__glow--yellow {
+  width: 800px;
+  height: 800px;
+  background: radial-gradient(circle, rgba(251, 191, 36, 0.45), transparent 60%);
+  top: -5%;
+  right: -10%;
+}
+
+.hero__glow--purple {
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(168, 85, 247, 0.22), transparent 65%);
+  bottom: 5%;
+  left: -8%;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 1024px) {
+  .hero {
+    flex-direction: column;
+    align-items: center;
+    padding: 20px 32px 40px;
+    text-align: center;
+  }
+
+  .hero__content {
+    max-width: 100%;
+    padding-top: 16px;
+  }
+
+  .hero__cta {
+    justify-content: center;
+  }
+
+  .hero__image-wrapper {
+    max-width: 400px;
+    margin-top: 32px;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero {
+    padding: 16px 20px 32px;
+  }
+
+  .hero__input {
+    width: 100%;
+  }
+
+  .hero__cta {
+    flex-direction: column;
+  }
+
+  .hero__btn {
+    width: 100%;
+    text-align: center;
+  }
+}

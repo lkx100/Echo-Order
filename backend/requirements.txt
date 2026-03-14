@@ -1,0 +1,9 @@
+fastapi
+uvicorn[standard]
+python-dotenv
+python-multipart
+pydantic-settings
+sqlalchemy[asyncio]
+aiosqlite
+groq
+elevenlabs

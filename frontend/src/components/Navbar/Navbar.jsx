@@ -29,7 +29,7 @@ const Navbar = () => {
   return (
     <nav className="floating-navbar" id="navbar">
       <div className="navbar__logo">
-        Echo.<span>Order</span>
+      <Link to="/" className="navbar__home-link" title="Home">Echo.<span>Order</span></Link>
       </div>
       <div className={`floating-capsule ${isOpen ? 'active' : ''}`}>
         <div className="capsule-inner">

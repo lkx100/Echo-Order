@@ -1,0 +1,316 @@
+/* ===== Section — mirrors .hero layout ===== */
+.hiw {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 120px 60px 80px;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+/* ===== Hero-style glow blobs ===== */
+.hiw__glow {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(120px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.hiw__glow--yellow {
+  width: 700px;
+  height: 700px;
+  background: radial-gradient(circle, rgba(251, 191, 36, 0.35), transparent 60%);
+  top: -10%;
+  left: -10%;
+}
+
+.hiw__glow--purple {
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(168, 85, 247, 0.2), transparent 65%);
+  bottom: 0;
+  right: -5%;
+}
+
+/* ===== Floating decorations ===== */
+.hiw__deco {
+  position: absolute;
+  z-index: 1;
+  opacity: 0.1;
+  pointer-events: none;
+}
+
+.hiw__deco--1 {
+  top: 12%;
+  left: 5%;
+  font-size: 40px;
+  animation: hiwFloat 6s ease-in-out infinite;
+}
+
+.hiw__deco--2 {
+  top: 8%;
+  left: 42%;
+  font-size: 34px;
+  animation: hiwFloat 7s ease-in-out infinite 1.2s;
+}
+
+.hiw__deco--3 {
+  bottom: 20%;
+  left: 30%;
+  font-size: 36px;
+  animation: hiwFloat 5s ease-in-out infinite 0.6s;
+}
+
+@keyframes hiwFloat {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-12px); }
+}
+
+/* ===== Left content ===== */
+.hiw__content {
+  flex: 1;
+  max-width: 520px;
+  z-index: 2;
+  padding-top: 20px;
+}
+
+.hiw__label {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--accent-cyan);
+  border: 1px solid rgba(45, 212, 191, 0.3);
+  border-radius: 100px;
+  padding: 6px 18px;
+  margin-bottom: 24px;
+}
+
+.hiw__title {
+  font-size: clamp(36px, 5vw, 62px);
+  font-weight: 800;
+  color: var(--text-main);
+  line-height: 1.1;
+  margin-bottom: 20px;
+}
+
+.hiw__subtitle {
+  font-size: 16px;
+  color: var(--text-muted);
+  line-height: 1.7;
+  max-width: 420px;
+  margin-bottom: 48px;
+}
+
+/* ===== Step pills ===== */
+.hiw__steps {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.hiw__pill {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: rgba(20, 20, 20, 0.6);
+  backdrop-filter: blur(8px);
+  border: 1px solid #222;
+  border-radius: 12px;
+  padding: 14px 18px;
+  transition: transform 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
+  cursor: pointer;
+}
+
+.hiw__pill:hover {
+  transform: translateX(6px);
+}
+
+.hiw__pill--cyan   { border-color: rgba(45, 212, 191, 0.25); }
+.hiw__pill--purple { border-color: rgba(168, 85, 247, 0.25); }
+.hiw__pill--orange { border-color: rgba(251, 146, 60, 0.25); }
+
+/* Active / selected state */
+.hiw__pill--active.hiw__pill--cyan {
+  background: rgba(45, 212, 191, 0.1);
+  border-color: rgba(45, 212, 191, 0.6);
+  box-shadow: 0 0 20px rgba(45, 212, 191, 0.15);
+  transform: translateX(6px);
+}
+.hiw__pill--active.hiw__pill--cyan .hiw__pill-num { color: var(--accent-cyan); }
+
+.hiw__pill--active.hiw__pill--purple {
+  background: rgba(168, 85, 247, 0.1);
+  border-color: rgba(168, 85, 247, 0.6);
+  box-shadow: 0 0 20px rgba(168, 85, 247, 0.15);
+  transform: translateX(6px);
+}
+.hiw__pill--active.hiw__pill--purple .hiw__pill-num { color: var(--accent-purple); }
+
+.hiw__pill--active.hiw__pill--orange {
+  background: rgba(251, 146, 60, 0.1);
+  border-color: rgba(251, 146, 60, 0.6);
+  box-shadow: 0 0 20px rgba(251, 146, 60, 0.15);
+  transform: translateX(6px);
+}
+.hiw__pill--active.hiw__pill--orange .hiw__pill-num { color: var(--accent-orange); }
+
+.hiw__pill-icon {
+  font-size: 22px;
+  flex-shrink: 0;
+}
+
+.hiw__pill-num {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  color: var(--text-muted);
+  display: block;
+  margin-bottom: 2px;
+}
+
+.hiw__pill-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-main);
+}
+
+/* ===== Right — CardSwap wrapper ===== */
+.hiw__swap-wrapper {
+  flex: 1;
+  position: relative;
+  min-height: 580px;
+  max-width: 600px;
+  z-index: 2;
+}
+
+/* ===== Card inner content ===== */
+.hiw-card-inner {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 36px 32px;
+  box-sizing: border-box;
+}
+
+.hiw-card-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 28px;
+}
+
+.hiw-card-icon {
+  font-size: 48px;
+  line-height: 1;
+}
+
+.hiw-card-number {
+  font-size: 64px;
+  font-weight: 800;
+  color: rgba(255, 255, 255, 0.05);
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.hiw-card-title {
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 14px;
+  line-height: 1.2;
+}
+
+.hiw-card-title--cyan   { color: var(--accent-cyan); }
+.hiw-card-title--purple { color: var(--accent-purple); }
+.hiw-card-title--orange { color: var(--accent-orange); }
+
+.hiw-card-desc {
+  font-size: 15px;
+  color: var(--text-muted);
+  line-height: 1.75;
+  flex: 1;
+}
+
+.hiw-card-tag {
+  display: inline-block;
+  margin-top: 24px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  border-radius: 100px;
+  padding: 5px 14px;
+  align-self: flex-start;
+}
+
+.hiw-card-tag--cyan   { background: rgba(45, 212, 191, 0.12); color: var(--accent-cyan); }
+.hiw-card-tag--purple { background: rgba(168, 85, 247, 0.12); color: var(--accent-purple); }
+.hiw-card-tag--orange { background: rgba(251, 146, 60, 0.12);  color: var(--accent-orange); }
+
+/* ===== Responsive ===== */
+@media (max-width: 1024px) {
+  .hiw {
+    flex-direction: column;
+    align-items: center;
+    padding: 110px 32px 60px;
+    text-align: center;
+    min-height: auto;
+  }
+
+  .hiw__content {
+    max-width: 100%;
+    padding-top: 0;
+  }
+
+  .hiw__subtitle {
+    margin: 0 auto 48px;
+  }
+
+  .hiw__steps {
+    align-items: center;
+  }
+
+  .hiw__pill {
+    width: 100%;
+    max-width: 400px;
+    text-align: left;
+  }
+
+  .hiw__swap-wrapper {
+    width: 100%;
+    max-width: 480px;
+    min-height: 520px;
+    margin-top: 60px;
+  }
+
+  .hiw__deco--3 {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .hiw {
+    padding: 96px 24px 40px;
+  }
+
+  .hiw__deco--2 {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .hiw {
+    padding: 90px 20px 40px;
+  }
+
+  .hiw__deco {
+    display: none;
+  }
+
+  .hiw__swap-wrapper {
+    min-height: 440px;
+  }
+}

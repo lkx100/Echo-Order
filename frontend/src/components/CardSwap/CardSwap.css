@@ -1,0 +1,53 @@
+.card-swap-container {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  transform: translate(5%, 20%);
+  transform-origin: bottom right;
+  perspective: 900px;
+  overflow: visible;
+}
+
+.card {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(14, 14, 14, 0.88);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  transform-style: preserve-3d;
+  will-change: transform;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  overflow: hidden;
+}
+
+/* Accent variants — override border & subtle glow */
+.card.hiw-card--cyan {
+  border-color: rgba(45, 212, 191, 0.35);
+  box-shadow: 0 0 0 1px rgba(45, 212, 191, 0.1) inset;
+}
+
+.card.hiw-card--purple {
+  border-color: rgba(168, 85, 247, 0.35);
+  box-shadow: 0 0 0 1px rgba(168, 85, 247, 0.1) inset;
+}
+
+.card.hiw-card--orange {
+  border-color: rgba(251, 146, 60, 0.35);
+  box-shadow: 0 0 0 1px rgba(251, 146, 60, 0.1) inset;
+}
+
+@media (max-width: 768px) {
+  .card-swap-container {
+    transform: scale(0.75) translate(25%, 25%);
+  }
+}
+
+@media (max-width: 480px) {
+  .card-swap-container {
+    transform: scale(0.55) translate(25%, 25%);
+  }
+}

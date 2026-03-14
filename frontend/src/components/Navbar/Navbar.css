@@ -2,22 +2,15 @@
 .floating-navbar {
   position: fixed;
   top: 20px;
-  left: 50%;
-  transform: translateX(-50%);
+  left: 20px;
+  right: 20px;
   z-index: 100;
   pointer-events: all;
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
   align-items: center;
   gap: 20px;
-  width: 90%;
-  max-width: 1200px;
-  justify-content: space-between;
-  background: rgba(10, 10, 10, 0.6);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(45, 212, 191, 0.2);
-  padding: 12px 20px;
-  border-radius: 50px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  width: auto;
 }
 
 /* Logo Styling */
@@ -27,6 +20,7 @@
   letter-spacing: -0.5px;
   color: var(--text-main);
   flex-shrink: 0;
+  justify-self: start;
 }
 
 .navbar__logo span {
@@ -35,22 +29,24 @@
 
 /* Floating Capsule Design */
 .floating-capsule {
-  background: transparent;
+  background: rgba(10, 10, 10, 0.6);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(45, 212, 191, 0.2);
+  border-radius: 50px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
   display: flex;
   align-items: center;
   gap: 4px;
-  flex: 1;
   justify-content: center;
-}
-
-.floating-capsule.active {
-  gap: 12px;
+  padding: 10px 14px;
+  justify-self: center;
 }
 
 .capsule-inner {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 6px;
+  justify-content: center;
 }
 
 /* Navigation Item */
@@ -89,6 +85,7 @@
   align-items: center;
   gap: 12px;
   flex-shrink: 0;
+  justify-self: end;
 }
 
 .navbar__login,
@@ -127,13 +124,28 @@
 /* Responsive Design */
 @media (max-width: 768px) {
   .floating-navbar {
-    width: 95%;
-    padding: 10px 16px;
+    left: 12px;
+    right: 12px;
     gap: 12px;
+    grid-template-columns: 1fr;
+    justify-items: stretch;
   }
 
   .navbar__logo {
     font-size: 18px;
+    justify-self: start;
+  }
+
+  .floating-capsule {
+    width: 100%;
+    padding: 8px 10px;
+    border-radius: 16px;
+  }
+
+  .capsule-inner {
+    width: 100%;
+    justify-content: center;
+    gap: 2px;
   }
 
   .nav-item {
@@ -141,9 +153,14 @@
     font-size: 11px;
   }
 
+  .navbar__auth {
+    width: 100%;
+    justify-content: flex-end;
+  }
+
   .navbar__login,
   .navbar__signup {
-    padding: 6px 12px;
+    padding: 8px 12px;
     font-size: 11px;
   }
 }
@@ -151,21 +168,13 @@
 @media (max-width: 480px) {
   .floating-navbar {
     top: 10px;
-    width: 98%;
-    padding: 8px 12px;
+    left: 8px;
+    right: 8px;
     gap: 8px;
-    flex-wrap: wrap;
   }
 
   .navbar__logo {
     font-size: 16px;
-    order: 1;
-  }
-
-  .floating-capsule {
-    order: 2;
-    width: 100%;
-    margin: 8px 0;
   }
 
   .nav-item {
@@ -174,9 +183,8 @@
   }
 
   .navbar__auth {
-    order: 3;
-    width: 100%;
     gap: 8px;
+    justify-content: stretch;
   }
 
   .navbar__login,

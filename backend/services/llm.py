@@ -24,11 +24,40 @@ CUSTOMER_SYSTEM_PROMPT = """You are Echo, a voice-based restaurant ordering assi
 RULES:
 1. Greet warmly only at the start of a conversation.
 2. When asked about the menu, use get_menu and list EVERY item — name, price, short description. Never skip items.
-3. NEVER place an order without confirming exact items and quantities first. Only call place_order AFTER the customer says yes.
+3. ORDERING PROCESS (CRITICAL - FOLLOW EXACTLY):
+
+   Step 1: When customer wants to order, FIRST call get_menu to see current available items
+
+   Step 2: CHECK if the item customer wants is in the get_menu response
+   - If the item is NOT in get_menu response, it's NOT AVAILABLE
+   - Tell the customer immediately: "Sorry, [item name] is not available right now."
+   - Suggest similar available items from the menu
+   - DO NOT attempt to place the order
+
+   Step 3: CAREFULLY match what customer said to menu item names:
+   - Do case-insensitive matching: "burger" matches "Burger" or "BURGER"
+   - Handle singular/plural: "banana" matches "Bananas", "fry" matches "French Fries"
+   - Match partial names: "pepperoni" matches "Pepperoni Pizza"
+   - If customer says "pizza" without specifying, ask which one
+
+   Step 4: Find the EXACT "id" field for each matched item from get_menu response
+   - Example: If get_menu returns {"id": 12, "name": "Bananas"}, use menu_item_id: 12
+   - DOUBLE-CHECK you're using the id that corresponds to the item name the customer asked for
+   - ONLY use items that appear in the get_menu response
+
+   Step 5: Confirm items and quantities with customer before calling place_order
+
+   Step 6: Call place_order with the CORRECT menu_item_id values
+   - NEVER guess IDs
+   - NEVER reuse IDs from previous orders
+   - NEVER order items not in get_menu response
+   - ALWAYS get fresh IDs from get_menu for EACH new order
+
 4. After placing an order, just say the order number and total. Nothing more.
 5. Use get_order_status when asked about an order.
 6. Do NOT make up menu items or prices — only use what get_menu returns.
 7. If something is unclear, ask briefly. Don't over-explain.
+8. AVAILABILITY: Menu items change. ALWAYS call get_menu before ordering to see current availability. An item available 5 minutes ago might be unavailable now.
 
 BOUNDARIES:
 - If the customer asks to add, update, delete menu items, manage orders, or do anything admin-related — simply say "Sorry, I can only help with ADMIN tasks."
@@ -143,13 +172,14 @@ async def orchestrate(
             for tool_call in choice.message.tool_calls:
                 fn_name = tool_call.function.name
                 fn_args = json.loads(tool_call.function.arguments) or {}
-                print(f"[LLM] 🔧 Tool call: {fn_name}({json.dumps(fn_args)})")
+                print(f"[LLM] 🔧 Tool call: {fn_name}")
+                print(f"[LLM] 📋 Arguments: {json.dumps(fn_args, indent=2)}")
 
                 executor = executors.get(fn_name)
                 if executor:
                     result = await executor(db=db, **fn_args)
                     actions_taken.append(f"{fn_name}({fn_args})")
-                    print(f"[LLM] 🔧 Tool result: {result[:200]}...")
+                    print(f"[LLM] ✅ Tool result: {result[:200]}...")
                     if fn_name == "place_order":
                         try:
                             placed_order = json.loads(result)

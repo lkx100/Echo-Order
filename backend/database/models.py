@@ -126,3 +126,26 @@ class OrderItem(Base):
             "quantity": self.quantity,
             "subtotal": self.subtotal,
         }
+
+
+class RestaurantProfile(Base):
+    """Singleton table — at most one row stores the restaurant's profile."""
+
+    __tablename__ = "restaurant_profile"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    restaurant_name = Column(String(200), nullable=False)
+    tagline = Column(String(300), default="")
+    phone = Column(String(30), default="")
+    address = Column(Text, default="")
+    updated_at = Column(DateTime, default=datetime.datetime.utcnow, onupdate=datetime.datetime.utcnow)
+
+    def to_dict(self) -> dict:
+        return {
+            "id": self.id,
+            "restaurant_name": self.restaurant_name,
+            "tagline": self.tagline,
+            "phone": self.phone,
+            "address": self.address,
+            "updated_at": self.updated_at.isoformat() if self.updated_at else None,
+        }

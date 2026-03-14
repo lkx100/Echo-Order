@@ -223,14 +223,6 @@ const Chat = () => {
                             </div>
                         </div>
                         <div className="chat-header__controls">
-                            <select
-                                className="role-selector"
-                                value={role}
-                                onChange={e => setRole(e.target.value)}
-                            >
-                                <option value="customer">Customer</option>
-                                <option value="admin">Admin</option>
-                            </select>
                             <button
                                 className="reset-btn"
                                 onClick={() => { setSessionId(''); setResults([]); console.log('🔄 [SESSION] Reset'); }}

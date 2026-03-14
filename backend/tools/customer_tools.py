@@ -17,7 +17,7 @@ CUSTOMER_TOOLS = [
         "type": "function",
         "function": {
             "name": "get_menu",
-            "description": "Retrieve all available menu items with their names, descriptions, prices, and categories. Call this when the customer asks to see the menu or asks what's available.",
+            "description": "Retrieve all currently available menu items with their IDs, names, descriptions, prices, and categories. IMPORTANT: Call this BEFORE placing any order to get current availability and menu_item_id values. Menu availability changes frequently.",
             "parameters": {
                 "type": "object",
                 "properties": {},
@@ -29,7 +29,7 @@ CUSTOMER_TOOLS = [
         "type": "function",
         "function": {
             "name": "place_order",
-            "description": "Place a new order for the customer. Only call this after you have confirmed the exact items and quantities with the customer.",
+            "description": "Place a new order for the customer. IMPORTANT: Only call this with menu_item_id values from the current get_menu response. NEVER use IDs from memory or previous conversations. Only call after confirming exact items and quantities with the customer.",
             "parameters": {
                 "type": "object",
                 "properties": {
@@ -87,11 +87,19 @@ async def execute_get_menu(db: AsyncSession, **kwargs) -> str:
     )
     items = result.scalars().all()
     menu = [item.to_dict() for item in items]
+
+    print(f"[GET_MENU] Returning {len(menu)} available menu items:")
+    for item in menu:
+        print(f"  - ID {item['id']:2d}: {item['name']:30s} ${item['price']:.2f}")
+
     return json.dumps({"menu_items": menu, "count": len(menu)})
 
 
 async def execute_place_order(db: AsyncSession, items: list[dict], **kwargs) -> str:
     """Create an order from a list of {menu_item_id, quantity}."""
+    print(f"[PLACE_ORDER] Received order request:")
+    print(f"[PLACE_ORDER] Items: {json.dumps(items, indent=2)}")
+
     order = Order()
     db.add(order)
     await db.flush()  # get order.id
@@ -100,11 +108,27 @@ async def execute_place_order(db: AsyncSession, items: list[dict], **kwargs) -> 
     order_items_info = []
 
     for entry in items:
-        menu_item = await db.get(MenuItem, entry["menu_item_id"])
-        if not menu_item or not menu_item.is_available:
+        menu_item_id = entry["menu_item_id"]
+        menu_item = await db.get(MenuItem, menu_item_id)
+
+        if not menu_item:
+            error_msg = f"Item with ID {menu_item_id} does not exist in the database."
+            print(f"[PLACE_ORDER] ❌ ERROR: {error_msg}")
             return json.dumps({
-                "error": f"Menu item with ID {entry['menu_item_id']} not found or unavailable."
+                "error": error_msg,
+                "message": "This item is not in our system. Please check the menu and try again."
             })
+
+        if not menu_item.is_available:
+            error_msg = f"'{menu_item.name}' is currently not available."
+            print(f"[PLACE_ORDER] ❌ ERROR: {error_msg}")
+            return json.dumps({
+                "error": error_msg,
+                "item_name": menu_item.name,
+                "message": f"Sorry, {menu_item.name} is not available right now. Please choose a different item from the menu."
+            })
+
+        print(f"[PLACE_ORDER] ✅ Matched ID {menu_item_id} → {menu_item.name} (${menu_item.price})")
 
         qty = entry["quantity"]
         subtotal = menu_item.price * qty
@@ -125,6 +149,9 @@ async def execute_place_order(db: AsyncSession, items: list[dict], **kwargs) -> 
 
     order.total_amount = total
     await db.commit()
+
+    print(f"[PLACE_ORDER] ✅ Order #{order.id} created successfully! Total: ${total:.2f}")
+    print(f"[PLACE_ORDER] Items: {order_items_info}")
 
     return json.dumps({
         "order_id": order.id,

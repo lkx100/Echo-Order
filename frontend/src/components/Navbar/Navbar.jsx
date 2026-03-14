@@ -2,12 +2,11 @@ import './Navbar.css';
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-import Chat from '../Chat/Chat.jsx';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
-  const { user, logout, isAuthenticated } = useAuth();
+  const { user, logout, isAuthenticated, isAdmin } = useAuth();
   const navigate = useNavigate();
 
   const navItems = [
@@ -33,9 +32,15 @@ const Navbar = () => {
       </div>
       <div className={`floating-capsule ${isOpen ? 'active' : ''}`}>
         <div className="capsule-inner">
-          <Link to="/chat" className="nav-item" onClick={handleScroll} title="Chat">
-            <span className="nav-text">Chat</span>
-          </Link>
+          {isAdmin ? (
+            <Link to="/admin" className="nav-item" onClick={handleScroll} title="Dashboard">
+              <span className="nav-text">Dashboard</span>
+            </Link>
+          ) : (
+            <Link to="/chat" className="nav-item" onClick={handleScroll} title="Chat">
+              <span className="nav-text">Chat</span>
+            </Link>
+          )}
           {navItems.map((item) => (
             <a
               key={item.name}

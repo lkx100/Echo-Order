@@ -1,0 +1,228 @@
+/* ===== Admin Layout ===== */
+.admin-layout {
+  min-height: 100vh;
+  display: flex;
+  background: var(--bg-dark);
+  font-family: var(--font-family);
+}
+
+/* Sidebar */
+.admin-sidebar {
+  width: 220px;
+  flex-shrink: 0;
+  background: rgba(12, 12, 12, 0.98);
+  border-right: 1px solid rgba(255, 255, 255, 0.06);
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  z-index: 100;
+}
+
+.admin-sidebar__brand {
+  padding: 22px 20px 18px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.admin-sidebar__logo {
+  font-size: 17px;
+  font-weight: 800;
+  color: var(--text-main);
+  letter-spacing: -0.5px;
+}
+
+.admin-sidebar__logo span {
+  color: var(--accent-orange);
+}
+
+.admin-sidebar__sub {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: var(--accent-orange);
+  opacity: 0.7;
+  margin-top: 3px;
+}
+
+.admin-sidebar__restaurant {
+  padding: 12px 20px 8px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.admin-sidebar__restaurant-name {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-main);
+  opacity: 0.8;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+}
+
+.admin-sidebar__restaurant-tag {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-top: 1px;
+  display: block;
+}
+
+/* Nav */
+.admin-sidebar__nav {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 12px 10px;
+  gap: 2px;
+}
+
+.admin-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: background 0.15s, color 0.15s;
+}
+
+.admin-nav-item .nav-icon {
+  font-size: 15px;
+  width: 18px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.admin-nav-item:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-main);
+}
+
+.admin-nav-item.active {
+  background: rgba(251, 146, 60, 0.12);
+  color: var(--accent-orange);
+}
+
+/* Footer */
+.admin-sidebar__footer {
+  padding: 14px 14px 18px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.admin-sidebar__user {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.admin-sidebar__avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: rgba(251, 146, 60, 0.15);
+  border: 1px solid rgba(251, 146, 60, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--accent-orange);
+  flex-shrink: 0;
+}
+
+.admin-sidebar__username {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-main);
+  line-height: 1.2;
+}
+
+.admin-sidebar__role {
+  font-size: 10px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.admin-sidebar__logout {
+  background: rgba(239, 68, 68, 0.07);
+  border: 1px solid rgba(239, 68, 68, 0.18);
+  border-radius: 8px;
+  color: #fca5a5;
+  font-family: var(--font-family);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 8px 12px;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+  width: 100%;
+  text-align: left;
+}
+
+.admin-sidebar__logout:hover {
+  background: rgba(239, 68, 68, 0.14);
+  border-color: rgba(239, 68, 68, 0.35);
+}
+
+/* Main content */
+.admin-content {
+  margin-left: 220px;
+  flex: 1;
+  min-height: 100vh;
+  background: var(--bg-dark);
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Shared page header bar */
+.admin-page-header {
+  padding: 24px 28px 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.admin-page-header__title {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text-main);
+  letter-spacing: -0.4px;
+}
+
+.admin-page-header__sub {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+/* ===== Setup Page (full-screen, no sidebar) ===== */
+.setup-page {
+  min-height: 100vh;
+  background: var(--bg-dark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  font-family: var(--font-family);
+}
+
+.setup-card {
+  width: 100%;
+  max-width: 460px;
+  background: rgba(20, 20, 20, 0.9);
+  border: 1px solid rgba(251, 146, 60, 0.2);
+  border-radius: 20px;
+  padding: 36px 36px 32px;
+  box-shadow: 0 24px 64px rgba(251, 146, 60, 0.07);
+}

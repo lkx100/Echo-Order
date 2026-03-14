@@ -22,8 +22,10 @@ const Navbar = () => {
         Echo.<span>Order</span>
       </div>
       <div className={`floating-capsule ${isOpen ? 'active' : ''}`}>
-        <li><Link to="/chat" className="navbar__link">Chat</Link></li>
         <div className="capsule-inner">
+          <Link to="/chat" className="nav-item" onClick={handleScroll} title="Chat">
+            <span className="nav-text">Chat</span>
+          </Link>
           {navItems.map((item) => (
             <a
               key={item.name}

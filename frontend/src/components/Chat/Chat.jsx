@@ -1,5 +1,6 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import Groq from 'groq-sdk';
+import './Chat.css';
 
 const API_BASE = 'http://localhost:8000';
 
@@ -127,52 +128,117 @@ const Chat = () => {
             setLoading(false);
         }
     };
+    const messagesEndRef = useRef(null);
+
+    useEffect(() => {
+        messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    }, [results, loading]);
+
     return (
-        <div style={{ padding: 20, fontFamily: 'monospace', maxWidth: 700, margin: '0 auto' }}>
-            <h2>🧪 Echo-Order — Test Harness</h2>
+        <div className="chat-page">
+            <div className="chat-container">
 
-            {/* Role selector */}
-            <div style={{ marginBottom: 16 }}>
-                <label>Role: </label>
-                <select value={role} onChange={e => setRole(e.target.value)}>
-                    <option value="customer">Customer</option>
-                    <option value="admin">Admin</option>
-                </select>
-                <span style={{ marginLeft: 12, color: '#888' }}>
-                    Session: {sessionId || '(new)'}
-                </span>
-            </div>
-
-            {/* Record button */}
-            <div style={{ marginBottom: 16 }}>
-                {!recording ? (
-                    <button onClick={startRecording} disabled={loading} style={{ fontSize: 16, padding: '8px 20px' }}>
-                        🎤 Start Recording
-                    </button>
-                ) : (
-                    <button onClick={stopRecording} style={{ fontSize: 16, padding: '8px 20px', background: '#ff4444', color: '#fff', border: 'none', borderRadius: 4 }}>
-                        ⏹️ Stop & Send
-                    </button>
-                )}
-                {loading && <span style={{ marginLeft: 12 }}>⏳ Processing...</span>}
-            </div>
-
-            {/* Reset session */}
-            <button onClick={() => { setSessionId(''); setResults([]); console.log('🔄 [SESSION] Reset') }} style={{ marginBottom: 20, fontSize: 12 }}>
-                Reset Session
-            </button>
-
-            {/* Results */}
-            <hr />
-            <h3>Conversation ({results.length} turns)</h3>
-            {results.map((r, i) => (
-                <div key={i} style={{ borderLeft: '3px solid #4CAF50', paddingLeft: 12, marginBottom: 16 }}>
-                    <p><strong>You:</strong> {r.transcript}</p>
-                    <p><strong>Echo:</strong> {r.response_text}</p>
-                    {/* Render new internal blob url OR fallback to initial local audio endpoint */}
-                    {r.audio_url && <audio controls src={r.audio_url.startsWith('blob:') ? r.audio_url : `${API_BASE}${r.audio_url}`} style={{ width: '100%' }} />}
+                {/* Header */}
+                <div className="chat-header">
+                    <div className="chat-header__info">
+                        <div className="chat-header__title">Echo.<span>Order</span></div>
+                        <div className="chat-header__session">
+                            Session: <em>{sessionId || 'new'}</em>
+                        </div>
+                    </div>
+                    <div className="chat-header__controls">
+                        <select
+                            className="role-selector"
+                            value={role}
+                            onChange={e => setRole(e.target.value)}
+                        >
+                            <option value="customer">Customer</option>
+                            <option value="admin">Admin</option>
+                        </select>
+                        <button
+                            className="reset-btn"
+                            onClick={() => { setSessionId(''); setResults([]); console.log('🔄 [SESSION] Reset'); }}
+                        >
+                            Reset
+                        </button>
+                    </div>
                 </div>
-            ))}
+
+                {/* Messages */}
+                <div className="chat-messages">
+                    {results.length === 0 && !loading && (
+                        <div className="chat-empty">
+                            <div className="chat-empty__icon">🎙️</div>
+                            <div className="chat-empty__title">Start a conversation</div>
+                            <div className="chat-empty__sub">Press the mic button below and speak your order. Echo will respond.</div>
+                        </div>
+                    )}
+
+                    {results.map((r, i) => (
+                        <div key={i} className="chat-turn">
+                            {/* User message */}
+                            <div className="msg-user">
+                                <div className="bubble">
+                                    <div className="bubble__label">You</div>
+                                    <div className="bubble__text">{r.transcript}</div>
+                                </div>
+                                <div className="msg-avatar">👤</div>
+                            </div>
+
+                            {/* Echo response */}
+                            <div className="msg-echo">
+                                <div className="msg-avatar">🤖</div>
+                                <div className="bubble">
+                                    <div className="bubble__label">Echo</div>
+                                    <div className="bubble__text">{r.response_text}</div>
+                                    {r.audio_url && (
+                                        <div className="bubble__audio">
+                                            <audio
+                                                controls
+                                                src={r.audio_url.startsWith('blob:') ? r.audio_url : `${API_BASE}${r.audio_url}`}
+                                            />
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+                        </div>
+                    ))}
+
+                    {loading && (
+                        <div className="msg-echo">
+                            <div className="msg-avatar">🤖</div>
+                            <div className="bubble">
+                                <div className="bubble__label">Echo</div>
+                                <div className="bubble__text" style={{ color: 'var(--text-muted)', fontStyle: 'italic' }}>Thinking…</div>
+                            </div>
+                        </div>
+                    )}
+
+                    <div ref={messagesEndRef} />
+                </div>
+
+                {/* Action bar */}
+                <div className="chat-action-bar">
+                    <div className="mic-btn-wrap">
+                        {recording && <div className="mic-ring" />}
+                        {recording && <div className="mic-ring" />}
+                        <button
+                            className={`mic-btn ${recording ? 'mic-btn--recording' : 'mic-btn--idle'}`}
+                            onClick={recording ? stopRecording : startRecording}
+                            disabled={loading}
+                            title={recording ? 'Stop & send' : 'Start recording'}
+                        >
+                            {recording ? '⏹️' : '🎤'}
+                        </button>
+                    </div>
+                    <div className={`mic-status ${recording ? 'mic-status--recording' : loading ? 'mic-status--loading' : ''}`}>
+                        {recording && 'Recording — tap to stop'}
+                        {loading && <><span className="dot-spin" /> Processing…</>}
+                        {!recording && !loading && 'Tap to speak'}
+                    </div>
+                </div>
+
+            </div>
         </div>
     );
 };

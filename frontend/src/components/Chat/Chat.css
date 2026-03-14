@@ -1,0 +1,411 @@
+/* ===== Chat Page Layout ===== */
+.chat-page {
+  min-height: 100vh;
+  background: var(--bg-dark);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 90px;
+  padding-bottom: 0;
+  font-family: var(--font-family);
+}
+
+.chat-container {
+  width: 100%;
+  max-width: 760px;
+  height: calc(100vh - 90px);
+  display: flex;
+  flex-direction: column;
+  padding: 0 16px 16px;
+}
+
+/* ===== Chat Header ===== */
+.chat-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  background: rgba(20, 20, 20, 0.8);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(45, 212, 191, 0.15);
+  border-radius: 16px;
+  margin-bottom: 12px;
+  flex-shrink: 0;
+}
+
+.chat-header__info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.chat-header__title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-main);
+  letter-spacing: -0.3px;
+}
+
+.chat-header__title span {
+  color: var(--accent-orange);
+}
+
+.chat-header__session {
+  font-size: 11px;
+  color: var(--text-muted);
+  font-weight: 400;
+}
+
+.chat-header__session em {
+  color: var(--accent-cyan);
+  font-style: normal;
+  font-weight: 500;
+}
+
+.chat-header__controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.role-selector {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(45, 212, 191, 0.2);
+  border-radius: 8px;
+  color: var(--text-main);
+  font-family: var(--font-family);
+  font-size: 12px;
+  font-weight: 500;
+  padding: 6px 10px;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.role-selector:hover, .role-selector:focus {
+  border-color: rgba(45, 212, 191, 0.5);
+  background: rgba(45, 212, 191, 0.05);
+}
+
+.role-selector option {
+  background: #141414;
+  color: var(--text-main);
+}
+
+.reset-btn {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  color: var(--text-muted);
+  font-size: 12px;
+  font-weight: 500;
+  padding: 6px 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.reset-btn:hover {
+  background: rgba(251, 146, 60, 0.1);
+  border-color: rgba(251, 146, 60, 0.4);
+  color: var(--accent-orange);
+}
+
+/* ===== Messages Area ===== */
+.chat-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 8px 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(45, 212, 191, 0.2) transparent;
+}
+
+.chat-messages::-webkit-scrollbar {
+  width: 4px;
+}
+
+.chat-messages::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.chat-messages::-webkit-scrollbar-thumb {
+  background: rgba(45, 212, 191, 0.25);
+  border-radius: 4px;
+}
+
+/* Empty state */
+.chat-empty {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  color: var(--text-muted);
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.chat-empty__icon {
+  font-size: 48px;
+  opacity: 0.5;
+}
+
+.chat-empty__title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-main);
+  opacity: 0.6;
+}
+
+.chat-empty__sub {
+  font-size: 13px;
+  color: var(--text-muted);
+  max-width: 280px;
+  line-height: 1.6;
+}
+
+/* ===== Turn (one exchange) ===== */
+.chat-turn {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* User bubble — right aligned */
+.msg-user {
+  align-self: flex-end;
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+  max-width: 75%;
+}
+
+.msg-user .bubble {
+  background: rgba(45, 212, 191, 0.12);
+  border: 1px solid rgba(45, 212, 191, 0.25);
+  border-radius: 18px 18px 4px 18px;
+  padding: 12px 16px;
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--text-main);
+}
+
+.msg-user .bubble__label {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--accent-cyan);
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.msg-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  flex-shrink: 0;
+}
+
+.msg-user .msg-avatar {
+  background: rgba(45, 212, 191, 0.2);
+  border: 1px solid rgba(45, 212, 191, 0.3);
+}
+
+/* Echo bubble — left aligned */
+.msg-echo {
+  align-self: flex-start;
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+  max-width: 80%;
+}
+
+.msg-echo .msg-avatar {
+  background: rgba(251, 146, 60, 0.15);
+  border: 1px solid rgba(251, 146, 60, 0.3);
+}
+
+.msg-echo .bubble {
+  background: rgba(20, 20, 20, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 18px 18px 18px 4px;
+  padding: 12px 16px;
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--text-main);
+  flex: 1;
+}
+
+.msg-echo .bubble__label {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--accent-orange);
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.bubble__text {
+  color: var(--text-main);
+}
+
+/* Audio player inside bubble */
+.bubble__audio {
+  margin-top: 10px;
+}
+
+.bubble__audio audio {
+  width: 100%;
+  height: 32px;
+  border-radius: 8px;
+  accent-color: var(--accent-cyan);
+  filter: invert(0);
+}
+
+/* ===== Recording / Action Bar ===== */
+.chat-action-bar {
+  flex-shrink: 0;
+  padding-top: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Mic button */
+.mic-btn-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mic-btn {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;
+  transition: transform 0.15s, box-shadow 0.2s;
+  position: relative;
+  z-index: 1;
+}
+
+.mic-btn--idle {
+  background: var(--accent-cyan);
+  box-shadow: 0 4px 20px rgba(45, 212, 191, 0.35);
+}
+
+.mic-btn--idle:hover:not(:disabled) {
+  transform: scale(1.06);
+  box-shadow: 0 6px 28px rgba(45, 212, 191, 0.5);
+}
+
+.mic-btn--recording {
+  background: #ef4444;
+  box-shadow: 0 4px 20px rgba(239, 68, 68, 0.45);
+  animation: mic-pulse 1.4s ease-in-out infinite;
+}
+
+.mic-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+/* ripple rings when recording */
+.mic-ring {
+  position: absolute;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  border: 2px solid #ef4444;
+  animation: mic-ring-expand 1.4s ease-out infinite;
+  opacity: 0;
+}
+
+.mic-ring:nth-child(2) {
+  animation-delay: 0.5s;
+}
+
+@keyframes mic-ring-expand {
+  0% { transform: scale(1); opacity: 0.6; }
+  100% { transform: scale(2.2); opacity: 0; }
+}
+
+@keyframes mic-pulse {
+  0%, 100% { box-shadow: 0 4px 20px rgba(239, 68, 68, 0.45); }
+  50% { box-shadow: 0 4px 32px rgba(239, 68, 68, 0.7); }
+}
+
+/* Status label under mic */
+.mic-status {
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.4px;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 20px;
+}
+
+.mic-status--recording {
+  color: #ef4444;
+}
+
+.mic-status--loading {
+  color: var(--accent-cyan);
+}
+
+/* spinner dot */
+.dot-spin {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: 2px solid var(--accent-cyan);
+  border-top-color: transparent;
+  animation: spin 0.7s linear infinite;
+  display: inline-block;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 600px) {
+  .chat-container {
+    padding: 0 8px 12px;
+  }
+
+  .chat-header {
+    padding: 12px 14px;
+    border-radius: 12px;
+  }
+
+  .chat-header__title {
+    font-size: 14px;
+  }
+
+  .msg-user, .msg-echo {
+    max-width: 92%;
+  }
+
+  .mic-btn {
+    width: 56px;
+    height: 56px;
+    font-size: 22px;
+  }
+}

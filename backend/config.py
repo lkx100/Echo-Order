@@ -18,7 +18,7 @@ class Settings(BaseSettings):
     DATABASE_URL: str = "sqlite+aiosqlite:///./echo_order.db"
 
     # --- App ---
-    CORS_ORIGINS: list[str] = ["http://localhost:5173", "http://localhost:3000"]
+    CORS_ORIGINS: list[str] = ["http://localhost:5173", "http://localhost:3000", "https://echo-order-backend.onrender.com"]
 
     model_config = {"env_file": ".env", "extra": "ignore"}
 

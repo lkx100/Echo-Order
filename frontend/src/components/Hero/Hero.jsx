@@ -1,4 +1,5 @@
 import './Hero.css';
+import manImage from '../../assets/man.png';
 
 const Hero = () => {
   return (
@@ -45,8 +46,8 @@ const Hero = () => {
       {/* Right side - 3D Delivery Illustration */}
       <div className="hero__image-wrapper">
         <img
-          src="/delivery-boy.png"
-          alt="3D delivery person riding a bicycle with food delivery backpack"
+          src={manImage}
+          alt="3D man illustration"
           className="hero__image"
         />
       </div>

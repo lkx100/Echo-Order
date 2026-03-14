@@ -1,23 +1,43 @@
 import './Navbar.css';
+import { useState } from 'react';
 
 const Navbar = () => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const navItems = [
+    { name: "Home", link: "#hero" },
+    { name: "About", link: "#about" },
+    { name: "Contact", link: "#contact" },
+  ];
+
+  const handleScroll = () => {
+    setIsOpen(false);
+  };
+
   return (
-    <nav className="navbar" id="navbar">
+    <nav className="floating-navbar" id="navbar">
       <div className="navbar__logo">
         Echo.<span>Order</span>
       </div>
-
-      <ul className="navbar__links">
-        <li><a href="#services" className="navbar__link">Service</a></li>
-        <li><a href="#store" className="navbar__link">Store</a></li>
-        <li><a href="#discount" className="navbar__link">Discount</a></li>
-      </ul>
-
-      <button className="navbar__hamburger" aria-label="Toggle menu" id="menu-toggle">
-        <span></span>
-        <span></span>
-        <span></span>
-      </button>
+      <div className={`floating-capsule ${isOpen ? 'active' : ''}`}>
+        <div className="capsule-inner">
+          {navItems.map((item) => (
+            <a
+              key={item.name}
+              href={item.link}
+              className="nav-item"
+              onClick={handleScroll}
+              title={item.name}
+            >
+              <span className="nav-text">{item.name}</span>
+            </a>
+          ))}
+        </div>
+      </div>
+      <div className="navbar__auth">
+        <button className="navbar__login">Login</button>
+        <button className="navbar__signup">Sign Up</button>
+      </div>
     </nav>
   );
 };

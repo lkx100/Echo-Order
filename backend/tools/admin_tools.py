@@ -46,7 +46,7 @@ ADMIN_TOOLS = [
         "type": "function",
         "function": {
             "name": "update_menu_item",
-            "description": "Update an existing menu item's details (name, price, description, category, availability).",
+            "description": "Update an existing menu item's details (name, price, description, category, availability). You MUST call get_menu first to find the correct item_id before using this tool.",
             "parameters": {
                 "type": "object",
                 "properties": {
@@ -68,7 +68,7 @@ ADMIN_TOOLS = [
         "type": "function",
         "function": {
             "name": "delete_menu_item",
-            "description": "Remove a menu item by making it unavailable (soft delete).",
+            "description": "Remove a menu item by making it unavailable (soft delete). You MUST call get_menu first to find the correct item_id before using this tool.",
             "parameters": {
                 "type": "object",
                 "properties": {

@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import Groq from 'groq-sdk';
 import './Chat.css';
 
-const API_BASE = 'http://localhost:8000';
+const API_BASE = 'https://echo-order-backend.onrender.com';
 
 const Chat = () => {
     const [role, setRole] = useState('customer');
@@ -10,12 +10,15 @@ const Chat = () => {
     const [recording, setRecording] = useState(false);
     const [loading, setLoading] = useState(false);
     const [results, setResults] = useState([]);
+
+    const [playing, setPlaying] = useState(false);
     const [menuOpen, setMenuOpen] = useState(true);
     const [menuData, setMenuData] = useState({});
     const [menuLoading, setMenuLoading] = useState(true);
 
     const mediaRecorder = useRef(null);
     const audioChunks = useRef([]);
+    const currentAudio = useRef(null);
     // Note: dangerouslyAllowBrowser is required when using the Groq SDK on the frontend
     const groqClient = useRef(new Groq({
         apiKey: import.meta.env.VITE_GROQ_API_KEY,
@@ -84,11 +87,23 @@ const Chat = () => {
             const url = URL.createObjectURL(blob);
 
             const audio = new Audio(url);
+            currentAudio.current = audio;
+            setPlaying(true);
+            audio.onended = () => { currentAudio.current = null; setPlaying(false); };
             audio.play();
             return url;
         } catch (error) {
             console.error('❌ [APP] Groq TTS Error:', error);
             return null;
+        }
+    };
+
+    const stopAudio = () => {
+        if (currentAudio.current) {
+            currentAudio.current.pause();
+            currentAudio.current.currentTime = 0;
+            currentAudio.current = null;
+            setPlaying(false);
         }
     };
 
@@ -225,7 +240,7 @@ const Chat = () => {
                         <div className="chat-header__controls">
                             <button
                                 className="reset-btn"
-                                onClick={() => { setSessionId(''); setResults([]); console.log('🔄 [SESSION] Reset'); }}
+                                onClick={() => { stopAudio(); setSessionId(''); setResults([]); console.log('🔄 [SESSION] Reset'); }}
                             >
                                 Reset
                             </button>
@@ -301,19 +316,30 @@ const Chat = () => {
                         <div className="mic-btn-wrap">
                             {recording && <div className="mic-ring" />}
                             {recording && <div className="mic-ring" />}
+                            {playing ? (
                             <button
-                                className={`mic-btn ${recording ? 'mic-btn--recording' : 'mic-btn--idle'}`}
-                                onClick={recording ? stopRecording : startRecording}
-                                disabled={loading}
-                                title={recording ? 'Stop & send' : 'Start recording'}
+                                className="mic-btn mic-btn--stop"
+                                onClick={stopAudio}
+                                title="Stop audio"
                             >
-                                {recording ? '⏹️' : '🎤'}
+                                ⏹️
                             </button>
-                        </div>
-                        <div className={`mic-status ${recording ? 'mic-status--recording' : loading ? 'mic-status--loading' : ''}`}>
-                            {recording && 'Recording — tap to stop'}
+                        ) : (
+                            <button
+                                    className={`mic-btn ${recording ? 'mic-btn--recording' : 'mic-btn--idle'}`}
+                                    onClick={recording ? stopRecording : startRecording}
+                                    disabled={loading}
+                                    title={recording ? 'Stop & send' : 'Start recording'}
+                                >
+                                    {recording ? '⏹️' : '🎤'}
+                                </button>
+                            )}
+                    </div>
+                        <div className={`mic-status ${recording ? 'mic-status--recording' : loading ? 'mic-status--loading' : playing ? 'mic-status--playing' : ''}`}>
+                            {playing && 'Playing — tap to stop'}
+                        {recording && 'Recording — tap to stop'}
                             {loading && <><span className="dot-spin" /> Processing…</>}
-                            {!recording && !loading && 'Tap to speak'}
+                            {!recording && !loading && !playing && 'Tap to speak'}
                         </div>
                     </div>
 

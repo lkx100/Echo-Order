@@ -622,6 +622,16 @@
   animation: mic-pulse 1.4s ease-in-out infinite;
 }
 
+.mic-btn--stop {
+  background: #f97316;
+  box-shadow: 0 4px 20px rgba(249, 115, 22, 0.45);
+}
+
+.mic-btn--stop:hover {
+  transform: scale(1.06);
+  box-shadow: 0 6px 28px rgba(249, 115, 22, 0.6);
+}
+
 .mic-btn:disabled {
   opacity: 0.5;
   cursor: not-allowed;
@@ -671,6 +681,10 @@
 
 .mic-status--loading {
   color: var(--accent-cyan);
+}
+
+.mic-status--playing {
+  color: #f97316;
 }
 
 /* spinner dot */

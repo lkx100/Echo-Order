@@ -88,22 +88,17 @@ async def orchestrate(
     role: str,
     history: list[dict],
     db: AsyncSession,
-) -> tuple[str, list[str]]:
+) -> tuple[str, list[str], dict | None]:
     """
     Run the LLM orchestration loop.
 
-    Args:
-        transcript: The user's spoken text (from STT).
-        role: "customer" or "admin".
-        history: Previous conversation messages.
-        db: Active async DB session.
-
     Returns:
-        (response_text, actions_taken) — the final LLM text and a list of
-        action descriptions for logging.
+        (response_text, actions_taken, placed_order) — the final LLM text, a list of
+        action descriptions for logging, and order data if an order was placed.
     """
     system_prompt, tools, executors = _get_role_config(role)
     actions_taken: list[str] = []
+    placed_order: dict | None = None
 
     # Build the messages list
     messages = [{"role": "system", "content": system_prompt}]
@@ -155,6 +150,11 @@ async def orchestrate(
                     result = await executor(db=db, **fn_args)
                     actions_taken.append(f"{fn_name}({fn_args})")
                     print(f"[LLM] 🔧 Tool result: {result[:200]}...")
+                    if fn_name == "place_order":
+                        try:
+                            placed_order = json.loads(result)
+                        except Exception:
+                            pass
                 else:
                     result = json.dumps({"error": f"Unknown tool: {fn_name}"})
                     print(f"[LLM] ❌ Unknown tool: {fn_name}")
@@ -171,7 +171,7 @@ async def orchestrate(
         # No tool calls — we have the final response
         final_text = choice.message.content or "I'm sorry, I didn't catch that."
         print(f"[LLM] ✅ Final response: \"{final_text[:100]}...\"")
-        return final_text, actions_taken
+        return final_text, actions_taken, placed_order
 
     # Safety net: if we hit max rounds, return whatever we have
-    return "I've processed your request. Is there anything else I can help with?", actions_taken
+    return "I've processed your request. Is there anything else I can help with?", actions_taken, placed_order

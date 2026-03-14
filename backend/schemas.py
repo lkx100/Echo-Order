@@ -47,6 +47,9 @@ class TextOutputResponse(BaseModel):
     transcript: str
     response_text: str
     audio_url: str | None = None
+    order_id: int | None = None
+    order_total: float | None = None
+    order_items: list[dict] | None = None
 
 
 # ---------------------------------------------------------------------------
